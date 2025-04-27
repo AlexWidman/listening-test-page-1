@@ -46,41 +46,35 @@
     </style>
 </head>
 <body>
-<h1>Ljudklipp för Lyssningstest - Sida 1</h1>
-<p>Lyssna på dessa tre ljudklipp och håll koll på vilken som är vilken när du besvarar frågorna i formuläret!</p>
-<div class="audio-container" id="audio-container"></div>
+<h1>Ljudklipp för Lyssningstest</h1>
+<p>Lyssna på dessa tre ljudklipp och håll koll på vilken som är vilken genom deras ID när du besvarar frågorna i formuläret!</p>
+<div id="audio-container"></div>
+
 <script>
+    // Hardcoded mapping with IDs
     const clipList = [
-        { label: "Klipp A", path: "audio/clipStudio1A.wav" },
-        { label: "Klipp B", path: "audio/clipStudio1B.wav" },
-        { label: "Klipp C", path: "audio/clipStudio1C.wav" }
+        {src: "audio/clipStudio1A.wav", id: "AB7"},
+        {src: "audio/clipStudio1B.wav", id: "FX2"},
+        {src: "audio/clipStudio1C.wav", id: "QY9"}
     ];
 
+    // Shuffle
     for (let i = clipList.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [clipList[i], clipList[j]] = [clipList[j], clipList[i]];
     }
 
     const container = document.getElementById('audio-container');
+    clipList.forEach((clip, index) => {
+        const audioElement = document.createElement('audio');
+        audioElement.src = clip.src;
+        audioElement.controls = true;
 
-    clipList.forEach((clip) => {
-        const box = document.createElement('div');
-        box.className = 'audio-box';
+        const label = document.createElement('p');
+        label.innerText = "Klipp " + (index + 1) + " (ID: " + clip.id + ")";
 
-        const heading = document.createElement('h2');
-        heading.textContent = clip.label;
-
-        const audio = document.createElement('audio');
-        audio.controls = true;
-
-        const source = document.createElement('source');
-        source.src = clip.path;
-        source.type = 'audio/wav';
-
-        audio.appendChild(source);
-        box.appendChild(heading);
-        box.appendChild(audio);
-        container.appendChild(box);
+        container.appendChild(label);
+        container.appendChild(audioElement);
     });
 </script>
 </body>
